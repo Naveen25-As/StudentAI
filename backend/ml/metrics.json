@@ -1,0 +1,46 @@
+{
+  "best_model": "Ridge Regression (Baseline)",
+  "test_r2": 0.9539,
+  "test_mae": 1.973,
+  "test_rmse": 2.514,
+  "cv_r2_mean": 0.9575,
+  "all_models_evaluated": {
+    "Ridge Regression (Baseline)": {
+      "cv_r2_mean": 0.9575,
+      "test_mae": 1.973,
+      "test_rmse": 2.514,
+      "test_r2": 0.9539
+    },
+    "Decision Tree Regressor": {
+      "cv_r2_mean": 0.8642,
+      "test_mae": 3.555,
+      "test_rmse": 4.459,
+      "test_r2": 0.8551
+    },
+    "Random Forest Regressor": {
+      "cv_r2_mean": 0.9349,
+      "test_mae": 2.516,
+      "test_rmse": 3.132,
+      "test_r2": 0.9285
+    },
+    "Gradient Boosting Regressor": {
+      "cv_r2_mean": 0.9564,
+      "test_mae": 2.031,
+      "test_rmse": 2.554,
+      "test_r2": 0.9525
+    }
+  },
+  "dataset_samples": 2500,
+  "features": [
+    "attendance_pct",
+    "cia_score",
+    "assignment_score",
+    "lab_score",
+    "prev_sem_sgpa",
+    "cumulative_aggregate",
+    "active_backlogs",
+    "daily_study_hours",
+    "daily_sleep_hours",
+    "extracurricular_hrs"
+  ]
+}

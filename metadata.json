@@ -1,0 +1,6 @@
+{
+  "name": "StudentAI — AI-Powered Student Performance & Prediction System",
+  "description": "Portfolio-quality academic diagnostic platform with real-time ML result prediction, SHAP feature attribution, study recommendations, and cohort analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
