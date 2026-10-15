@@ -2,6 +2,12 @@
 
 StudentAI is a portfolio-grade academic diagnostic and result prediction application engineered for BCA and B.Tech Computer Science faculties and students. It integrates an institutional dashboard design inspired by Google Stitch with a Scikit-learn machine learning regression pipeline, Python FastAPI backend, and MongoDB persistence.
 
+## 🚀 Live Demo
+
+![Vercel Deployment](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
+![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)
 ---
 
 ## 🌟 Key Capabilities
