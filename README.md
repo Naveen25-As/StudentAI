@@ -1,138 +1,404 @@
-# StudentAI — AI-Powered Student Performance & Result Prediction System
+# 🎓 StudentAI — AI-Powered Student Performance & Result Prediction System
 
-StudentAI is a portfolio-grade academic diagnostic and result prediction application engineered for BCA and B.Tech Computer Science faculties and students. It integrates an institutional dashboard design inspired by Google Stitch with a Scikit-learn machine learning regression pipeline, Python FastAPI backend, and MongoDB persistence.
+StudentAI is an AI-powered academic performance analysis and result prediction application designed for BCA and B.Tech Computer Science students and faculty. It combines a React-based dashboard, a Python FastAPI backend, a Scikit-learn machine learning pipeline, and MongoDB persistence to help analyze academic performance and estimate future results.
 
 ## 🚀 Live Demo
 
-![Vercel Deployment](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
-![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)
+🌐 **Frontend:** [Launch StudentAI](https://student-ai-bice.vercel.app/)
+
+⚙️ **Backend API:** [StudentAI API](https://studentai-api-u23u.onrender.com/)
+
+📚 **API Documentation:** [Explore Swagger UI](https://studentai-api-u23u.onrender.com/docs)
+
+💻 **Source Code:** [View Repository on GitHub](https://github.com/Naveen25-As/StudentAI/edit/main/README.md)
+
+![Frontend](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)
+![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)
+![Machine Learning](https://img.shields.io/badge/ML-Scikit--learn-F7931E?logo=scikitlearn)
+![Database](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)
+
 ---
 
-## 🌟 Key Capabilities
+## 📌 Table of Contents
 
-1. **Academic Overview Dashboard**:
-   - 5 Key summary metrics: Predicted Marks (82/100), Expected Grade (Grade A), Pass Probability (94%), Attendance Rate (85%), Risk Assessment (Low Risk).
-   - Semester Performance Trajectory hybrid chart comparing historical terms (Sem 1–5) against AI-predicted Sem 6.
-   - 5-Module Competency Progress meters (Python, DBMS, Web Development, Computer Networks, Mathematics IV).
-   - Dynamic Improvement Plan with checkable priority interventions.
-   - Recent Prediction Runs table with quick filtering.
+* [Overview](#-overview)
+* [Key Features](#-key-features)
+* [Technology Stack](#️-technology-stack)
+* [System Architecture](#️-system-architecture)
+* [Getting Started](#-getting-started-locally)
+* [Machine Learning Pipeline](#-machine-learning-pipeline)
+* [API Endpoints](#-api-endpoints)
+* [Live vs. Sample Data](#-live-vs-sample-data)
+* [Future Enhancements](#-future-enhancements)
+* [License](#-license)
+* [Author](#-author)
 
-2. **Computational Assessment Matrix (`/predict`)**:
-   - **Section A (Current Academic Performance - 60% Weight)**: Attendance slider with dynamic detention bar warnings (<75% Detained, 75% Mandatory, >90% Exemplary), CIA (max 50), Assignments (max 25), Practical/Viva (max 25).
-   - **Section B (Previous Collegiate Benchmarks - 25% Weight)**: Previous SGPA, Cumulative Aggregate %, Active Backlogs selector.
-   - **Section C (Study Habits - 15% Weight)**: Daily study hours, sleep duration, and extracurricular hours.
-   - **Instant Live Benchmark Preview**: High-contrast card recalculating estimated SGPA, pass probability, and risk tier dynamically on any slider or input change.
+---
 
-3. **Performance Prediction Report (`/report/:id`)**:
-   - Radial SVG score gauge (82/100 PTS) with "First Class with Distinction Band".
-   - **SHAP Feature Attribution Audit**: Visualizes individual feature lift (+6.2% CIA lift, +4.8% Attendance lift, -1.5% Lab delta) with cohort mean baseline indicators.
-   - Course-level forecast breakdown with syllabus credits and lead instructors.
-   - Strengths vs. Areas for Improvement panels.
-   - Interactive Recommended Action Checklist with completion toggles.
-   - Faculty Advisor Card with 1-on-1 messaging modal.
+## 🌟 Overview
 
-4. **Academic Analytics & History**:
-   - Recharts SGPA progression, attendance-to-marks correlation scatter, and subject competency radar charts.
-   - Searchable, filterable historical archive of all automated and manual prediction runs.
+StudentAI helps students and faculty explore academic performance through interactive dashboards, academic indicators, machine learning predictions, and personalized improvement recommendations.
 
-5. **Admin & Faculty Portal (`/admin`)**:
-   - Cohort risk distribution across 120 enrolled students (81.6% Low, 13.3% Moderate, 5.0% High Risk).
-   - Attendance compliance filter identifying students below the 75% statutory bar.
-   - Advisory notice dispatching.
+The application is designed to bring together academic records, attendance information, study habits, and previous semester performance in one place.
+
+### 🎯 Project Objectives
+
+* Estimate future academic performance using machine learning.
+* Analyze attendance, assignments, internal assessments, and previous academic results.
+* Identify potential academic risks.
+* Present performance trends through interactive charts.
+* Provide recommendations to help students improve their academic performance.
+* Demonstrate the integration of frontend development, backend APIs, machine learning, and database technologies.
+
+---
+
+## ✨ Key Features
+
+### 1. 📊 Academic Overview Dashboard
+
+* Summary cards for predicted marks, expected grade, pass probability, attendance, and academic risk.
+* Semester performance trajectory comparing previous semester results with predicted performance.
+* Subject competency indicators for Python, DBMS, Web Development, Computer Networks, and Mathematics IV.
+* Academic improvement recommendations.
+* Recent prediction history with filtering options.
+
+### 2. 🤖 Academic Performance Prediction
+
+The prediction interface organizes academic information into three categories.
+
+**Section A — Current Academic Performance**
+
+* Attendance percentage.
+* Continuous Internal Assessment (CIA) marks.
+* Assignment marks.
+* Practical and viva performance.
+* Attendance warnings for students below the required threshold.
+
+**Section B — Previous Academic Performance**
+
+* Previous semester SGPA.
+* Cumulative academic percentage.
+* Active backlogs.
+
+**Section C — Study Habits**
+
+* Daily study hours.
+* Sleep duration.
+* Extracurricular activity hours.
+
+The prediction interface provides estimated academic indicators and performance risk information based on the active prediction implementation.
+
+### 3. 📄 Performance Prediction Report
+
+The report interface is designed to present:
+
+* Predicted academic scores.
+* Expected grade and performance classification.
+* Subject-level performance estimates.
+* Strengths and areas requiring improvement.
+* Recommended actions for academic improvement.
+* Visual indicators explaining contributing academic factors.
+
+**Note:** Feature-attribution charts and other explanatory indicators should be interpreted according to their underlying implementation. They should not be considered genuine SHAP explanations unless calculated using the SHAP library and the trained model.
+
+### 4. 📈 Academic Analytics & History
+
+* Semester performance progression.
+* Attendance and marks comparison.
+* Subject competency visualizations.
+* Searchable prediction history.
+* Filtering of historical prediction records.
+
+### 5. 🏫 Admin & Faculty Portal
+
+The interface includes features designed for academic monitoring:
+
+* Cohort-level academic risk visualization.
+* Attendance compliance indicators.
+* Identification of students who may need academic support.
+* Academic advisory notices.
+
+**Data note:** Cohort totals and student statistics displayed in demonstration dashboards should be identified as sample data unless they are generated from actual connected records.
+
+---
+
+## 🛠️ Technology Stack
+
+| Category            | Technologies            |
+| ------------------- | ----------------------- |
+| Frontend            | React, TypeScript, Vite |
+| UI & Styling        | Tailwind CSS            |
+| Data Visualization  | Recharts                |
+| Backend             | Python, FastAPI         |
+| Machine Learning    | Scikit-learn            |
+| Data Processing     | Pandas, NumPy           |
+| Model Persistence   | Joblib                  |
+| Database            | MongoDB                 |
+| API Documentation   | Swagger UI / OpenAPI    |
+| Frontend Deployment | Vercel                  |
+| Backend Deployment  | Render                  |
+| Version Control     | Git and GitHub          |
 
 ---
 
 ## 🏗️ System Architecture
 
+```text
+                   ┌──────────────────────────┐
+                   │       User / Student     │
+                   └────────────┬─────────────┘
+                                │
+                                ▼
+                   ┌──────────────────────────┐
+                   │     React + TypeScript   │
+                   │       Vite Frontend      │
+                   │       (Vercel)           │
+                   └────────────┬─────────────┘
+                                │
+                         HTTP / REST API
+                                │
+                                ▼
+                   ┌──────────────────────────┐
+                   │       FastAPI Backend    │
+                   │        (Render)          │
+                   └────────────┬─────────────┘
+                                │
+                  ┌─────────────┴─────────────┐
+                  ▼                           ▼
+       ┌─────────────────────┐    ┌─────────────────────┐
+       │ Scikit-learn Model  │    │   MongoDB Database  │
+       │ Academic Prediction │    │ Prediction Records  │
+       └─────────────────────┘    └─────────────────────┘
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        StudentAI Application Shell                     │
-│  ┌───────────────────────┐  ┌────────────────────────────────────────┐  │
-│  │    Sidebar Navigation  │  │   Top Header (Search, Notice, User)   │  │
-│  │ - Logo & Semester Tag │  └────────────────────────────────────────┘  │
-│  │ - Nav Links (7 items) │  ┌────────────────────────────────────────┐  │
-│  │ - Model Engine Badge  │  │             Routed Main View           │  │
-│  │ - Role Switcher       │  │  • /dashboard     • /predict           │  │
-│  └───────────────────────┘  │  • /report/:id    • /history           │  │
-│                             │  • /analytics     • /recommendations   │  │
-│                             │  • /settings      • /admin             │  │
-│                             │  • /login         • /register          │  │
-│                             │  • /              (Landing)            │  │
-│                             └────────────────────────────────────────┘  │
-└────────────────────────────────────┬───────────────────────────────────┘
-                                     │
-           ┌─────────────────────────┴─────────────────────────┐
-           ▼                                                   ▼
-┌───────────────────────────────────┐       ┌───────────────────────────────────┐
-│     Prediction Engine Utility     │       │     Local Storage Data Store      │
-│  • calculatePrediction(input)     │       │  • studentProfile (Alex Chen)     │
-│  • SHAP feature impact lifts      │       │  • predictionRuns []              │
-│  • Subject-level grade estimates  │       │  • recommendationChecklist []     │
-│  • Risk tier & pass probability   │       │  • cohortRecords (for Admin)      │
-└───────────────────────────────────┘       └───────────────────────────────────┘
-```
+
+### Prediction Workflow
+
+1. The user enters academic and study-habit information.
+2. The frontend sends the prediction request to the backend when the live API is configured and available.
+3. FastAPI validates the request.
+4. The prediction pipeline processes the input using the trained model.
+5. The backend returns the prediction response.
+6. The frontend displays the result and associated academic indicators.
+
+If the backend is unavailable, the frontend may use its configured illustrative prediction logic instead. The interface should clearly distinguish illustrative estimates from model-generated results.
 
 ---
 
-## 🚀 Getting Started Locally
+## 💻 Getting Started Locally
 
-### 1. Frontend Setup (React + Vite + Tailwind)
+Follow these instructions to run StudentAI on your computer.
+
+### Prerequisites
+
+Install the following:
+
+* Python 3.11 or a compatible supported version.
+* Node.js and npm.
+* Git.
+* MongoDB, if you want to use a local MongoDB database.
+
+### 1. Clone the Repository
+
+Replace the repository URL below with your actual StudentAI repository URL if it is different.
+
 ```bash
-# Clone the repository
-git clone <repo-url>
-cd studentai
+git clone <YOUR-STUDENTAI-REPOSITORY-URL>
+cd StudentAI
+```
 
-# Install dependencies
+### 2. Install Frontend Dependencies
+
+```bash
 npm install
+```
 
-# Start development server
+Start the frontend development server:
+
+```bash
 npm run dev
 ```
-The frontend is available at `http://localhost:3000` (or `http://localhost:5173`).
 
-### 2. Machine Learning Pipeline Training
-```bash
-# Generate the realistic academic dataset (2,500 records)
-python3 backend/ml/dataset_generator.py
+Open the local URL printed in your terminal. Depending on the Vite configuration, it may be `http://localhost:3000` or `http://localhost:5173`.
 
-# Train candidate models, prevent leakage, evaluate metrics, and export model.joblib
-python3 backend/ml/train.py
+### 3. Set Up the Python Environment
+
+Create a virtual environment:
+
+**Windows PowerShell**
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
-This evaluates Ridge, DecisionTree, RandomForest, and GradientBoosting using 5-fold cross-validation and writes `backend/ml/metrics.json` and `backend/ml/model.joblib`.
 
-### 3. Python FastAPI Backend Setup
+Install the backend dependencies:
+
 ```bash
-# Install Python dependencies
 pip install -r backend/requirements.txt
-
-# Launch FastAPI development server
-uvicorn backend.main:app --reload --port 8000
 ```
-- Swagger API Docs: `http://localhost:8000/docs`
-- Health check: `http://localhost:8000/api/v1/health`
 
-### 4. MongoDB Database Setup (Optional)
-If MongoDB is installed locally:
+### 4. Generate the Dataset and Train the Model
+
+If you want to regenerate the training dataset and train the model, run:
+
 ```bash
-mongod --dbpath /data/db
+python backend/ml/dataset_generator.py
+python backend/ml/train.py
 ```
-Configure `.env`:
+
+These commands are intended to generate academic records and train the configured machine learning pipeline. The exact output files depend on the repository implementation.
+
+Ensure the training scripts complete successfully before starting the backend if the application requires a generated model file.
+
+### 5. Configure Environment Variables
+
+Create a `.env` file in the appropriate project directory and configure the environment variables required by your implementation.
+
+Example:
+
 ```env
 MONGODB_URI=mongodb://localhost:27017
 DATABASE_NAME=studentai_db
 VITE_API_URL=http://localhost:8000/api/v1
 ```
-*Note: If MongoDB is not running, StudentAI automatically activates its robust in-memory persistence fallback with clear UI indication.*
+
+**Important:**
+
+* Place frontend variables where Vite can read them.
+* Configure backend variables in the environment used by FastAPI.
+* Confirm that the application loads each variable from the correct location.
+* Never commit credentials, API keys, or production database connection strings to GitHub.
+* Keep `.env` files out of version control and provide a safe `.env.example` instead.
+
+### 6. Start the FastAPI Backend
+
+From the project root, run:
+
+```bash
+python -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+The backend should be available at:
+
+* **API Base URL:** `http://127.0.0.1:8000/api/v1`
+* **Swagger Documentation:** `http://127.0.0.1:8000/docs`
+* **Health Check:** `http://127.0.0.1:8000/api/v1/health`
+
+The health-check URL assumes that your application defines this route. If your route differs, use the endpoint configured in your backend.
+
+### 7. Configure MongoDB
+
+For a local MongoDB installation, configure:
+
+```env
+MONGODB_URI=mongodb://localhost:27017
+DATABASE_NAME=studentai_db
+```
+
+Ensure MongoDB is running before starting the backend.
+
+Alternatively, use MongoDB Atlas by configuring your connection string in the backend environment. Keep the connection string private.
 
 ---
 
-## 🔬 Honest Live vs. Sample Data Distinction
-- **When FastAPI is online**: The header shows `FastAPI ML Backend Live Synced` with a pulsing green indicator. Result predictions query the trained Scikit-learn model pipeline in real-time.
-- **When offline**: The header transparently displays `Illustrative AI Estimates Active` with an informational pill. The frontend calculates estimates using a deterministic regression formula matching the Stitch design weights (CIA 35%, SGPA 25%, Attendance 25%, Habits 15%), ensuring zero broken UI and transparent attribution.
+## 🧠 Machine Learning Pipeline
+
+StudentAI uses a Scikit-learn machine learning pipeline to estimate academic performance.
+
+The training workflow is intended to:
+
+1. Generate or load an academic dataset.
+2. Prepare input features and target values.
+3. Train and evaluate candidate regression models.
+4. Select a model based on the configured evaluation procedure.
+5. Save the trained model for inference.
+6. Load the saved model in the prediction backend.
+7. Return predictions through the FastAPI API.
+
+The candidate models described in the project include:
+
+* Ridge Regression
+* Decision Tree Regressor
+* Random Forest Regressor
+* Gradient Boosting Regressor
+
+The training script is configured to evaluate models using cross-validation.
+
+**Model evaluation note:** Dataset size, evaluation metrics, cross-validation results, and model performance should be reported from the actual generated dataset and training output. Synthetic training data and evaluation results alone do not establish real-world prediction accuracy.
+
+---
+
+## 🔌 API Endpoints
+
+The deployed backend provides API documentation through FastAPI's Swagger UI.
+
+**Explore the API:** [StudentAI Swagger Documentation](https://studentai-api-u23u.onrender.com/docs)
+
+The following are example endpoint descriptions; confirm the actual routes in Swagger UI before relying on them.
+
+| Endpoint          | Purpose                                   |
+| ----------------- | ----------------------------------------- |
+| `/docs`           | Interactive API documentation             |
+| `/api/v1/health`  | Backend health check, if configured       |
+| `/api/v1/predict` | Academic prediction, if configured        |
+| Additional routes | Determined by the implemented API routers |
+
+---
+
+## 🔬 Live vs. Illustrative Predictions
+
+StudentAI distinguishes between backend-generated predictions and illustrative frontend estimates.
+
+### Live Backend Mode
+
+When the FastAPI service is available and the frontend is configured correctly:
+
+* Prediction requests can be sent to the backend.
+* The backend can load the trained Scikit-learn model.
+* The model generates predictions from the supplied input.
+* Results are returned to the frontend through the API.
+
+### Illustrative Mode
+
+When the backend is unavailable, the frontend may use its local prediction logic to preserve the demonstration experience.
+
+These estimates are illustrative and should not be presented as predictions generated by the trained model.
+
+**Important:** Always check the application's live status indicator and verify the API response when demonstrating the machine learning functionality.
+
+---
+
+## 🔮 Future Enhancements
+
+Potential improvements include:
+
+* Student authentication and role-based access control.
+* Faculty and administrator dashboards backed by real database records.
+* Improved model evaluation using held-out test data.
+* Model explainability based on validated SHAP calculations.
+* Exportable academic performance reports.
+* More comprehensive prediction history and analytics.
+* Automated testing and continuous integration.
+* Improved accessibility and mobile responsiveness.
 
 ---
 
 ## 📜 License
-Apache-2.0
+
+This project is licensed under the Apache License 2.0.
+
+If you distribute this project under Apache-2.0, include the applicable `LICENSE` file in the repository.
+
+---
+
+## 👨‍💻 Author
+
+**Naveen Asundi**
+
+* GitHub: [Naveen25-As](https://github.com/Naveen25-As)
+* LinkedIn: [Connect with me](https://www.linkedin.com/in/naveen-asundi-0a75b739/)
+
+---
+
+⭐ **If you find StudentAI interesting, explore the live demo and check out the source code!**
