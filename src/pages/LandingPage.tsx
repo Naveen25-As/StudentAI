@@ -74,40 +74,91 @@ export const LandingPage: React.FC = () => {
         {/* Feature Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-12 text-left w-full">
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold" aria-hidden="true">
               <span className="material-symbols-outlined text-[22px]">model_training</span>
             </div>
-            <h3 className="text-base font-bold text-slate-900">Multi-Factor Machine Learning</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Trained Scikit-learn Random Forest regression pipeline evaluating CIA (35%), SGPA (25%), Attendance (25%), and Study Habits (15%) without subjective bias.
+            <h3 className="text-base font-bold text-slate-900">Multi-Model Regression Pipeline</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Trained Scikit-learn regression pipeline evaluating Continuous Assessments (35%), SGPA (25%), Attendance (25%), and Study Habits (15%) with R² = 0.954 holdout performance.
             </p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold" aria-hidden="true">
               <span className="material-symbols-outlined text-[22px]">tune</span>
             </div>
-            <h3 className="text-base font-bold text-slate-900">SHAP Feature Attribution</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Transparent attribution bar charts explaining individual feature lift and opportunity gaps against cohort baselines instead of opaque black-box scores.
+            <h3 className="text-base font-bold text-slate-900">Empirical Feature Attribution</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Transparent attribution bar charts explaining individual factor lift and opportunity gaps against cohort baselines rather than opaque black-box scores.
             </p>
           </div>
 
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col gap-3">
-            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold" aria-hidden="true">
               <span className="material-symbols-outlined text-[22px]">shield</span>
             </div>
             <h3 className="text-base font-bold text-slate-900">Statutory Risk Prevention</h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-slate-600 leading-relaxed">
               Early alerts for the 75% attendance detention bar and pending backlogs, paired with an actionable 7-point improvement plan with quantified boost estimates.
             </p>
           </div>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white py-6 px-6 text-center text-xs text-slate-400">
-        StudentAI System • Developed for BCA Academic Placement Portfolio • Preserving Google Stitch Institutional Design
+      {/* Comprehensive Compliant Footer */}
+      <footer className="border-t border-slate-200 bg-white py-10 px-6">
+        <div className="max-w-6xl mx-auto flex flex-col gap-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-slate-100">
+            <div className="flex flex-col gap-1 max-w-lg">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-md bg-indigo-600 flex items-center justify-center text-white text-xs font-black">
+                  <span className="material-symbols-outlined text-[15px]" aria-hidden="true">neurology</span>
+                </div>
+                <span className="font-extrabold text-sm text-slate-900 tracking-tight">StudentAI</span>
+                <span className="text-[10px] uppercase font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                  Open Source Capstone
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 leading-relaxed mt-1">
+                An independent educational machine learning diagnostic system developed by <strong>Naveen Asundi</strong>. Free, non-commercial, and licensed under Apache License 2.0.
+              </p>
+            </div>
+
+            {/* Legal & Compliance Nav Links */}
+            <nav aria-label="Legal & Information" className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs">
+              <Link to="/privacy" className="text-slate-600 hover:text-indigo-600 transition-colors font-medium">
+                Privacy Policy
+              </Link>
+              <Link to="/terms" className="text-slate-600 hover:text-indigo-600 transition-colors font-medium">
+                Terms &amp; Conditions
+              </Link>
+              <Link to="/cookies" className="text-slate-600 hover:text-indigo-600 transition-colors font-medium">
+                Cookie &amp; Storage Policy
+              </Link>
+              <Link to="/compliance" className="text-slate-600 hover:text-indigo-600 transition-colors font-medium">
+                Compliance Center
+              </Link>
+              <a
+                href="https://github.com/Naveen25-As/StudentAI"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-slate-600 hover:text-indigo-600 transition-colors font-medium flex items-center gap-1"
+              >
+                <span>GitHub</span>
+                <span className="material-symbols-outlined text-[14px]" aria-hidden="true">open_in_new</span>
+              </a>
+            </nav>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-500">
+            <p className="leading-relaxed max-w-2xl text-[11px]">
+              <strong>Academic Disclaimer:</strong> Predictions provided by StudentAI are statistical estimations for self-directed study guidance and advising discussions. They do not constitute official university grades, transcripts, or accredited academic evaluations.
+            </p>
+            <div className="shrink-0 text-slate-500 text-[11px]">
+              © 2024–2025 Naveen Asundi • Apache-2.0 License
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );

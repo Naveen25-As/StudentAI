@@ -13,15 +13,25 @@ import { RecommendationsPage } from './pages/RecommendationsPage';
 import { ProfileSettingsPage } from './pages/ProfileSettingsPage';
 import { AdminPortalPage } from './pages/AdminPortalPage';
 
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsPage } from './pages/TermsPage';
+import { CookiePolicyPage } from './pages/CookiePolicyPage';
+import { ComplianceTrustPage } from './pages/ComplianceTrustPage';
+import { CookieConsentBanner } from './components/common/CookieConsentBanner';
+
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Landing & Authentication */}
+          {/* Public Landing, Authentication & Legal Disclosures */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/cookies" element={<CookiePolicyPage />} />
+          <Route path="/compliance" element={<ComplianceTrustPage />} />
 
           {/* Authenticated Application Shell */}
           <Route element={<AppLayout />}>
@@ -40,6 +50,7 @@ export default function App() {
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        <CookieConsentBanner />
       </BrowserRouter>
     </AuthProvider>
   );

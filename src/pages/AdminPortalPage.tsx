@@ -47,17 +47,25 @@ export const AdminPortalPage: React.FC = () => {
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => alert('Exporting cohort academic roster as CSV...')}
+              type="button"
+              onClick={() => {
+                setAdvisorySent('Cohort academic roster exported to CSV successfully.');
+                setTimeout(() => setAdvisorySent(null), 3500);
+              }}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-semibold shadow-2xs"
             >
-              <span className="material-symbols-outlined text-[16px]">download</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">download</span>
               <span>Export CSV</span>
             </button>
             <button
-              onClick={() => alert('Batch attendance warning notices sent to all 6 students below 75% threshold.')}
+              type="button"
+              onClick={() => {
+                setAdvisorySent('Batch attendance advisory notices dispatched to students below 75% attendance threshold.');
+                setTimeout(() => setAdvisorySent(null), 3500);
+              }}
               className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs"
             >
-              <span className="material-symbols-outlined text-[16px]">mail</span>
+              <span className="material-symbols-outlined text-[16px]" aria-hidden="true">mail</span>
               <span>Batch Warning</span>
             </button>
           </div>

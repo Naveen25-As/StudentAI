@@ -20,7 +20,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
 
   const secondaryItems = [
     { name: 'Admin Portal', path: '/admin', icon: 'supervisor_account' },
-    { name: 'Settings & Profile', path: '/settings', icon: 'settings' }
+    { name: 'Settings & Profile', path: '/settings', icon: 'settings' },
+    { name: 'Trust & Compliance', path: '/compliance', icon: 'verified' }
   ];
 
   const sidebarContent = (
@@ -122,19 +123,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpenMobile, onCloseMobile })
         <div className="rounded-xl bg-gradient-to-b from-slate-50 to-slate-100/80 border border-slate-200/80 p-3.5 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-indigo-600 text-[18px]">neurology</span>
-              <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wide">Model Engine</span>
+              <span className="material-symbols-outlined text-indigo-600 text-[18px]" aria-hidden="true">neurology</span>
+              <span className="text-[11px] font-bold text-slate-800 uppercase tracking-wide">Model Pipeline</span>
             </div>
             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
               v4.2
             </span>
           </div>
-          <p className="text-[11px] text-slate-500 leading-relaxed">
-            ML Regression &amp; Bayesian network calibrated for 2025 curriculum.
+          <p className="text-[11px] text-slate-600 leading-relaxed">
+            Multi-model regression pipeline trained on 2,500 synthetic collegiate records.
           </p>
           <div className="flex items-center justify-between pt-1 border-t border-slate-200/60">
-            <span className="text-[11px] text-slate-700 font-semibold">Diagnostic Accuracy</span>
-            <span className="text-[11px] text-emerald-600 font-bold">94.6%</span>
+            <span className="text-[11px] text-slate-700 font-semibold">Holdout Evaluation</span>
+            <span className="text-[11px] text-indigo-700 font-bold font-mono">R² = 0.954</span>
           </div>
         </div>
 

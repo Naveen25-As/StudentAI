@@ -324,8 +324,8 @@ export const PredictionReportPage: React.FC = () => {
                     <span className="material-symbols-outlined text-[20px]">tune</span>
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-slate-900">Model Feature Importance &amp; Input Audit</h3>
-                    <p className="text-xs text-slate-500">SHAP attribution analysis revealing individual feature lift vs. cohort baseline</p>
+                    <h3 className="text-sm font-bold text-slate-900">Empirical Feature Attribution &amp; Input Audit</h3>
+                    <p className="text-xs text-slate-500">Heuristic attribution analysis revealing individual feature lift vs. cohort baseline</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 self-start sm:self-center">
@@ -680,10 +680,11 @@ export const PredictionReportPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setAdvisorChatOpen(true)}
+                aria-label="Message Academic Advisor Prof. Sarah Jenkins"
                 className="shrink-0 p-2 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-indigo-600 transition-colors"
                 title="Message Advisor"
               >
-                <span className="material-symbols-outlined text-[20px]">chat</span>
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">chat</span>
               </button>
             </div>
 

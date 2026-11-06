@@ -20,8 +20,8 @@ export interface BackendStatus {
 
 let cachedStatus: BackendStatus = {
   isLive: false,
-  model: 'Scikit-learn Random Forest Regressor v4.2',
-  accuracy: '94.6%',
+  model: 'Scikit-learn Multi-Model Pipeline (Ridge Baseline)',
+  accuracy: 'Holdout R² = 0.954',
   version: 'v4.2',
   url: API_BASE_URL
 };
@@ -41,8 +41,8 @@ export async function probeBackendStatus(): Promise<BackendStatus> {
       const data = await res.json();
       cachedStatus = {
         isLive: true,
-        model: data.model_name || 'FastAPI Trained Random Forest Regressor',
-        accuracy: data.accuracy || '94.6%',
+        model: data.model_name || 'Multi-Model Regression Pipeline',
+        accuracy: data.accuracy || 'Holdout R² = 0.954',
         version: data.version || 'v4.2',
         url: API_BASE_URL
       };

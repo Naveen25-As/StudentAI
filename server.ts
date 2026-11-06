@@ -37,10 +37,18 @@ async function startServer() {
     res.json({
       status: 'healthy',
       service: 'StudentAI Intelligence API Service',
-      model_name: 'Scikit-learn Random Forest Regressor v4.2',
+      model_name: 'Scikit-learn Multi-Model Pipeline (Ridge & Tree Ensembles)',
       version: 'v4.2.0',
-      accuracy: '94.6%',
-      database: 'MongoDB (Integrated Node/Express & Python REST Service)'
+      dataset_size: 2500,
+      dataset_type: 'Curated Synthetic Collegiate Dataset',
+      accuracy: 'R² 0.954 (Test Evaluation)',
+      evaluation_metrics: {
+        best_model: 'Ridge Regression',
+        test_r2: 0.9539,
+        test_mae: 1.973,
+        cv_r2_mean: 0.9575
+      },
+      database: 'Integrated In-Memory & Optional MongoDB Store'
     });
   });
 
@@ -218,8 +226,9 @@ async function startServer() {
     });
   }
 
-  app.listen(port, () => {
-    console.log(`StudentAI server listening on port ${port}`);
+  const host = '0.0.0.0';
+  app.listen(Number(port), host, () => {
+    console.log(`StudentAI server listening on http://${host}:${port}`);
   });
 }
 

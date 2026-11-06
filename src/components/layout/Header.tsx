@@ -37,16 +37,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileSidebar, onOpenSearc
 
         {/* Quick Search Bar */}
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Open search command palette (Ctrl+K)"
           onClick={onOpenSearch}
-          className="relative w-full cursor-pointer group"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onOpenSearch();
+            }
+          }}
+          className="relative w-full cursor-pointer group focus-visible:outline-2 focus-visible:outline-indigo-600 rounded-lg"
         >
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[19px] group-hover:text-indigo-600 transition-colors">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-[19px] group-hover:text-indigo-600 transition-colors" aria-hidden="true">
             search
           </span>
-          <div className="w-full h-9 pl-9 pr-16 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-400 flex items-center justify-between shadow-2xs group-hover:bg-white group-hover:border-indigo-400 transition-all">
+          <div className="w-full h-9 pl-9 pr-16 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-600 flex items-center justify-between shadow-2xs group-hover:bg-white group-hover:border-indigo-400 transition-all">
             <span className="truncate">Search modules, risk factors, or roll number...</span>
             <div className="flex items-center gap-1">
-              <kbd className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-white rounded border border-slate-200 shadow-2xs">
+              <kbd className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 bg-white rounded border border-slate-200 shadow-2xs">
                 Ctrl+K
               </kbd>
             </div>
@@ -123,27 +132,29 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileSidebar, onOpenSearc
         <div className="relative">
           <button
             onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-            className="flex items-center gap-2.5 pl-1 p-1 rounded-lg hover:bg-slate-100 transition-colors"
+            aria-label="User account and profile menu"
+            aria-expanded={userDropdownOpen}
+            className="flex items-center gap-2.5 pl-1 p-1 rounded-lg hover:bg-slate-100 transition-colors focus-visible:outline-2 focus-visible:outline-indigo-600"
           >
             <img
-              alt={currentUser.name}
+              alt={`Profile avatar for ${currentUser.name}`}
               className="w-8 h-8 rounded-full object-cover ring-2 ring-slate-200"
               src={currentUser.avatarUrl}
             />
             <div className="hidden md:flex flex-col text-left leading-tight">
               <span className="text-xs font-bold text-slate-800">{currentUser.name}</span>
-              <span className="text-[11px] text-slate-400">{currentUser.title}</span>
+              <span className="text-[11px] text-slate-500">{currentUser.title}</span>
             </div>
-            <span className="material-symbols-outlined text-slate-400 text-[18px] hidden md:block">
+            <span className="material-symbols-outlined text-slate-500 text-[18px] hidden md:block" aria-hidden="true">
               expand_more
             </span>
           </button>
 
           {userDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-slate-200 p-2 z-50 text-xs">
+            <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-lg border border-slate-200 p-2 z-50 text-xs">
               <div className="px-3 py-2 border-b border-slate-100 mb-1">
                 <div className="font-bold text-slate-800">{currentUser.name}</div>
-                <div className="text-slate-400 text-[11px] truncate">{currentUser.email}</div>
+                <div className="text-slate-500 text-[11px] truncate">{currentUser.email}</div>
                 <div className="mt-1 inline-flex items-center px-1.5 py-0.2 rounded bg-indigo-50 text-indigo-700 text-[10px] font-bold">
                   Role: {currentUser.role === 'admin' ? 'Faculty Admin' : 'Student (Sem 6)'}
                 </div>
@@ -157,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileSidebar, onOpenSearc
                 className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-700 font-medium flex items-center justify-between"
               >
                 <span>Switch to {currentUser.role === 'student' ? 'Admin View' : 'Student View'}</span>
-                <span className="material-symbols-outlined text-[16px] text-indigo-600">swap_horiz</span>
+                <span className="material-symbols-outlined text-[16px] text-indigo-600" aria-hidden="true">swap_horiz</span>
               </button>
 
               <Link
@@ -166,7 +177,25 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileSidebar, onOpenSearc
                 className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-700 font-medium flex items-center justify-between"
               >
                 <span>Profile &amp; Settings</span>
-                <span className="material-symbols-outlined text-[16px] text-slate-400">settings</span>
+                <span className="material-symbols-outlined text-[16px] text-slate-500" aria-hidden="true">settings</span>
+              </Link>
+
+              <Link
+                to="/compliance"
+                onClick={() => setUserDropdownOpen(false)}
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-700 font-medium flex items-center justify-between"
+              >
+                <span>Trust &amp; Compliance Center</span>
+                <span className="material-symbols-outlined text-[16px] text-indigo-600" aria-hidden="true">verified</span>
+              </Link>
+
+              <Link
+                to="/privacy"
+                onClick={() => setUserDropdownOpen(false)}
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-50 text-slate-700 font-medium flex items-center justify-between"
+              >
+                <span>Privacy &amp; Terms Policy</span>
+                <span className="material-symbols-outlined text-[16px] text-slate-500" aria-hidden="true">policy</span>
               </Link>
 
               <div className="my-1 border-t border-slate-100"></div>
@@ -180,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileSidebar, onOpenSearc
                 className="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-50 text-rose-600 font-medium flex items-center justify-between"
               >
                 <span>Sign Out</span>
-                <span className="material-symbols-outlined text-[16px]">logout</span>
+                <span className="material-symbols-outlined text-[16px]" aria-hidden="true">logout</span>
               </button>
             </div>
           )}

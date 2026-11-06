@@ -22,6 +22,9 @@ export const ProfileSettingsPage: React.FC = () => {
     probeBackendStatus().then(setBackendStatus);
   }, []);
 
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [purgeMode, setPurgeMode] = useState<'reset' | 'erase'>('reset');
+
   const handleSaveProfile = (e: React.FormEvent) => {
     e.preventDefault();
     updateProfile({
@@ -40,13 +43,21 @@ export const ProfileSettingsPage: React.FC = () => {
     setProbing(false);
   };
 
-  const handleResetData = () => {
-    if (window.confirm('Reset all prediction runs and checklists back to default demo data?')) {
+  const executeAction = () => {
+    if (purgeMode === 'erase') {
+      localStorage.clear();
+      setResetSuccess(true);
+      setConfirmModalOpen(false);
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 700);
+    } else {
       resetApplicationState();
       setResetSuccess(true);
+      setConfirmModalOpen(false);
       setTimeout(() => {
         window.location.reload();
-      }, 800);
+      }, 700);
     }
   };
 
@@ -217,24 +228,116 @@ export const ProfileSettingsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Section 3: Reset Demo State */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col">
-            <h3 className="text-sm font-bold text-slate-900">Reset Application State to Placement Demo Baseline</h3>
-            <span className="text-xs text-slate-400">
-              Restores initial Alex Chen prediction history (#PR-2024-884) and resets recommendation checkboxes
-            </span>
+        {/* Section 3: Data Management & Privacy Rights */}
+        <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col gap-5">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold">
+                <span className="material-symbols-outlined text-[20px]" aria-hidden="true">lock_reset</span>
+              </div>
+              <div className="flex flex-col">
+                <h3 className="text-sm font-bold text-slate-900">Data Management &amp; Privacy Rights</h3>
+                <span className="text-xs text-slate-500">Self-serve data reset and statutory right to erasure (DPDP Act 2023)</span>
+              </div>
+            </div>
+            <Link to="/privacy" className="text-xs text-indigo-600 hover:underline font-semibold">
+              Read Privacy Policy
+            </Link>
           </div>
 
-          <button
-            onClick={handleResetData}
-            className="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-bold transition-colors shrink-0"
-          >
-            {resetSuccess ? 'Restored Demo Baseline ✓' : 'Reset to Defaults'}
-          </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            {/* Option A: Reset to demo baseline */}
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between gap-3">
+              <div className="flex flex-col gap-1">
+                <span className="font-bold text-slate-900">Reset to Placement Demo Baseline</span>
+                <p className="text-slate-500 leading-snug">
+                  Restores default Alex Chen historical prediction reports and unchecks recommendation milestones.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setPurgeMode('reset');
+                  setConfirmModalOpen(true);
+                }}
+                className="w-full sm:w-auto px-4 py-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-lg text-xs font-semibold transition-colors"
+              >
+                Reset Demo Baseline
+              </button>
+            </div>
+
+            {/* Option B: Complete Data Erasure */}
+            <div className="p-4 rounded-xl bg-rose-50/50 border border-rose-200/80 flex flex-col justify-between gap-3">
+              <div className="flex flex-col gap-1">
+                <span className="font-bold text-rose-900 flex items-center gap-1.5">
+                  <span>Right to Erasure (Purge All Data)</span>
+                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-rose-100 text-rose-700 font-bold">DPDP §12</span>
+                </span>
+                <p className="text-slate-600 leading-snug">
+                  Permanently deletes all saved predictions, custom profile attributes, and local session tokens from your browser.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setPurgeMode('erase');
+                  setConfirmModalOpen(true);
+                }}
+                className="w-full sm:w-auto px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs"
+              >
+                Purge All Local Data
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
+
+      {/* Confirmation Modal */}
+      {confirmModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full p-6 flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${purgeMode === 'erase' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700'}`}>
+                <span className="material-symbols-outlined text-[22px]" aria-hidden="true">
+                  {purgeMode === 'erase' ? 'delete_forever' : 'restart_alt'}
+                </span>
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-slate-900">
+                  {purgeMode === 'erase' ? 'Confirm Complete Data Erasure' : 'Reset to Placement Demo Baseline?'}
+                </h2>
+                <p className="text-[11px] text-slate-500">
+                  {purgeMode === 'erase' ? 'Statutory Right to Erasure (DPDP Act 2023)' : 'Restores initial baseline demonstration data'}
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-600 leading-relaxed">
+              {purgeMode === 'erase'
+                ? 'This will immediately erase all saved prediction runs, customized student records, and LocalStorage keys from this device. You will be redirected to the landing page.'
+                : 'This will reset your prediction history back to report #PR-2024-884 and restore the original baseline recommendation checklist.'}
+            </p>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setConfirmModalOpen(false)}
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={executeAction}
+                className={`px-4 py-2 rounded-lg text-xs font-bold text-white transition-colors shadow-xs ${purgeMode === 'erase' ? 'bg-rose-600 hover:bg-rose-700' : 'bg-slate-900 hover:bg-slate-800'}`}
+              >
+                {purgeMode === 'erase' ? 'Yes, Permanently Erase' : 'Confirm Reset'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

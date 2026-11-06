@@ -19,9 +19,9 @@ app = FastAPI(
 # CORS Configuration for React Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:3000", "*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -36,9 +36,9 @@ def health_check():
     return HealthCheckResponse(
         status="healthy",
         service="StudentAI FastAPI Intelligence Service",
-        model_name="Random Forest Regressor v4.2",
+        model_name="Scikit-learn Multi-Model Pipeline (Ridge Baseline)",
         version="v4.2.0",
-        accuracy="94.6%",
+        accuracy="Holdout R² = 0.954",
         database="MongoDB (Live)" if db_manager.is_connected else "MongoDB (Fallback In-Memory Store)"
     )
 
