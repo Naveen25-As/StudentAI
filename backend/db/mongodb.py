@@ -16,12 +16,12 @@ password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def _build_memory_users():
-    """Optionally provision a local demo student from operator-supplied settings."""
-    if os.getenv("APP_ENV", "development").lower() == "production":
-        return []
-
+    """Optionally provision a local demo student from explicit operator settings."""
+    app_env = os.getenv("APP_ENV", "development").strip().lower()
+    demo_enabled = os.getenv("DEMO_STUDENT_ENABLED", "").strip().lower() == "true"
     password = os.getenv("DEMO_STUDENT_PASSWORD")
-    if not password:
+
+    if app_env == "production" or not demo_enabled or not password:
         return []
     if len(password.encode("utf-8")) > 72:
         raise ValueError("DEMO_STUDENT_PASSWORD must be at most 72 UTF-8 bytes for bcrypt.")
