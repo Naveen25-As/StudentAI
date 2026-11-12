@@ -1,7 +1,8 @@
 """
-MongoDB Database Connection & Persistent Store
-Handles connection pooling to MongoDB via Motor/PyMongo,
-with an in-memory document store fallback when a local MongoDB instance is not active.
+MongoDB database connection and persistence helpers.
+
+MongoDB documents are not altered during startup. The in-memory fallback is
+local-development only and never creates an administrator account.
 """
 
 import os
@@ -11,29 +12,35 @@ from passlib.context import CryptContext
 
 MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
 DATABASE_NAME = os.getenv("DATABASE_NAME", "studentai_db")
-
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def _hash_demo_password(password: str) -> str:
-    return password_context.hash(password)
+def _build_memory_users():
+    """Optionally provision a local demo student from operator-supplied settings."""
+    if os.getenv("APP_ENV", "development").lower() == "production":
+        return []
+
+    password = os.getenv("DEMO_STUDENT_PASSWORD")
+    if not password:
+        return []
+    if len(password.encode("utf-8")) > 72:
+        raise ValueError("DEMO_STUDENT_PASSWORD must be at most 72 UTF-8 bytes for bcrypt.")
+
+    return [{
+        "id": "usr-local-demo-student",
+        "name": "Local Demo Student",
+        "email": os.getenv("DEMO_STUDENT_EMAIL", "student@example.test").strip().lower(),
+        "password_hash": password_context.hash(password),
+        "role": "student",
+        "roll_number": "LOCAL-DEMO",
+        "degree": "Demo Program",
+    }]
 
 
-# Fallback in-memory collections when MongoDB server is not running.
-# The legacy public demo accounts are preserved only for local development and are not
-# treated as production admin identities.
+# No public default password or fallback admin account. This is process-local
+# demonstration data only and does not create, update, or delete MongoDB records.
 _memory_db = {
-    "users": [
-        {
-            "id": "usr-alex-chen",
-            "name": "Alex Chen",
-            "email": "alex.chen@university.edu",
-            "password_hash": _hash_demo_password("student2025"),
-            "role": "student",
-            "roll_number": "1KL21CS042",
-            "degree": "B.Tech Computer Science",
-        }
-    ],
+    "users": _build_memory_users(),
     "predictions": [],
     "recommendations": [],
 }
@@ -57,25 +64,18 @@ class DatabaseManager:
             print(f"[DatabaseManager] Successfully connected to MongoDB at {MONGODB_URI}")
         except Exception as e:
             self.is_connected = False
-            print(
-                f"[DatabaseManager] MongoDB server not reachable ({e}). Using secure in-memory data store."
-            )
+            print(f"[DatabaseManager] MongoDB server not reachable ({e}). Using in-memory data store.")
 
     def find_user_by_email(self, email: str):
+        normalized_email = email.strip().lower()
         if self.is_connected and self.db is not None:
-            return self.db.users.find_one({"email": email})
-        for user in _memory_db["users"]:
-            if user["email"] == email:
-                return user
-        return None
+            return self.db.users.find_one({"email": normalized_email})
+        return next((user for user in _memory_db["users"] if user["email"] == normalized_email), None)
 
     def find_user_by_id(self, user_id: str):
         if self.is_connected and self.db is not None:
             return self.db.users.find_one({"id": user_id})
-        for user in _memory_db["users"]:
-            if user["id"] == user_id:
-                return user
-        return None
+        return next((user for user in _memory_db["users"] if user["id"] == user_id), None)
 
     def insert_user(self, user_dict: dict):
         if self.is_connected and self.db is not None:
@@ -84,6 +84,21 @@ class DatabaseManager:
             return user_dict
         _memory_db["users"].append(user_dict)
         return user_dict
+
+    def update_password_hash(self, user_id: str, old_hash: str, new_hash: str) -> bool:
+        """Replace a verified legacy hash without overwriting concurrent changes."""
+        if self.is_connected and self.db is not None:
+            result = self.db.users.update_one(
+                {"id": user_id, "password_hash": old_hash},
+                {"$set": {"password_hash": new_hash}},
+            )
+            return result.modified_count == 1
+
+        for user in _memory_db["users"]:
+            if user["id"] == user_id and user.get("password_hash") == old_hash:
+                user["password_hash"] = new_hash
+                return True
+        return False
 
     def save_prediction(self, prediction_doc: dict):
         prediction_doc["created_at"] = datetime.utcnow().isoformat()
