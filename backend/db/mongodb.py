@@ -5,37 +5,39 @@ with an in-memory document store fallback when a local MongoDB instance is not a
 """
 
 import os
-import hashlib
 from datetime import datetime
+
+from passlib.context import CryptContext
 
 MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
 DATABASE_NAME = os.getenv("DATABASE_NAME", "studentai_db")
 
-# Fallback in-memory collections when MongoDB server is not running
+password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+def _hash_demo_password(password: str) -> str:
+    return password_context.hash(password)
+
+
+# Fallback in-memory collections when MongoDB server is not running.
+# The legacy public demo accounts are preserved only for local development and are not
+# treated as production admin identities.
 _memory_db = {
     "users": [
         {
             "id": "usr-alex-chen",
             "name": "Alex Chen",
             "email": "alex.chen@university.edu",
-            "password_hash": hashlib.sha256("student2025".encode()).hexdigest(),
+            "password_hash": _hash_demo_password("student2025"),
             "role": "student",
             "roll_number": "1KL21CS042",
-            "degree": "B.Tech Computer Science"
-        },
-        {
-            "id": "usr-sarah-jenkins",
-            "name": "Prof. Sarah Jenkins",
-            "email": "sarah.jenkins@university.edu",
-            "password_hash": hashlib.sha256("faculty2025".encode()).hexdigest(),
-            "role": "admin",
-            "roll_number": "FAC-CS-01",
-            "degree": "CS Department Faculty"
+            "degree": "B.Tech Computer Science",
         }
     ],
     "predictions": [],
-    "recommendations": []
+    "recommendations": [],
 }
+
 
 class DatabaseManager:
     def __init__(self):
@@ -47,20 +49,31 @@ class DatabaseManager:
     def _init_connection(self):
         try:
             from pymongo import MongoClient
+
             self.client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=800)
-            self.client.admin.command('ping')
+            self.client.admin.command("ping")
             self.db = self.client[DATABASE_NAME]
             self.is_connected = True
             print(f"[DatabaseManager] Successfully connected to MongoDB at {MONGODB_URI}")
         except Exception as e:
             self.is_connected = False
-            print(f"[DatabaseManager] MongoDB server not reachable ({e}). Using persistent in-memory data store.")
+            print(
+                f"[DatabaseManager] MongoDB server not reachable ({e}). Using secure in-memory data store."
+            )
 
     def find_user_by_email(self, email: str):
         if self.is_connected and self.db is not None:
             return self.db.users.find_one({"email": email})
         for user in _memory_db["users"]:
             if user["email"] == email:
+                return user
+        return None
+
+    def find_user_by_id(self, user_id: str):
+        if self.is_connected and self.db is not None:
+            return self.db.users.find_one({"id": user_id})
+        for user in _memory_db["users"]:
+            if user["id"] == user_id:
                 return user
         return None
 
@@ -84,5 +97,6 @@ class DatabaseManager:
         if self.is_connected and self.db is not None:
             return list(self.db.predictions.find({"user_id": user_id}).sort("created_at", -1))
         return list(reversed(_memory_db["predictions"]))
+
 
 db_manager = DatabaseManager()
